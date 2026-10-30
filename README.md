@@ -1,39 +1,81 @@
-Pertanyaan Tambahan Soal 1: Jika atribut harga diubah menjadi private, muncul pesan error "The field Perangkat.harga is not visible" atau "harga has private access in Perangkat".
-Alasan: Hak akses private membatasi akses suatu atribut hanya di dalam kelas tempat atribut itu dideklarasikan (yaitu kelas Perangkat). Akibatnya, subclass seperti Laptop tidak mewarisi dan tidak bisa lagi mengakses atribut harga secara langsung dari dalam method hitungHargaPromo miliknya. Untuk membagikan akses ke subclass tanpa membukanya untuk umum (public), kita harus menggunakan hak akses protected.
+# Tugas 2 Praktikum PBO: Inheritance, Composition, dan Polymorphism
 
-### Jawaban Soal 2: Analisis Output, Error, dan Polimorfisme
+## Judul dan Identitas
+- **Nama Tugas:** Tugas 2 Praktikum PBO - Inheritance, Composition, dan Polymorphism
+- **Nama Lengkap:** Muhammad Hafidhul Sultan
+- **NPM:** 250810701100056
+- **Kelas Praktikum:** Praktikum PBO Kelas A
+- **Tautan Repository:** https://github.com/HafidhulSultan056/Tugas2_Inherit-polymorph-25056
 
-**Bagian A**
-1. **Output Program:**
-   Hewan dibuat: Tom
-   Kucing dibuat
-   Tom makan
-   meong
-   Tom memanjat
-   Hewan dibuat: Generik
-   Exception in thread "main" java.lang.ClassCastException...
-2. **Error `h.panjat();`:** Jika komentar dihapus, akan terjadi **error kompilasi (compile-time error)**. Alasannya, tipe statis variabel `h` adalah `Hewan`, dan Java hanya mengecek tipe statis saat kompilasi. Karena kelas `Hewan` tidak memiliki method `panjat()`, kompilator akan menolaknya meskipun tipe dinamisnya (objek aslinya) adalah `Kucing`.
-3. **Penyebab ClassCastException:** Terjadi pada baris `Kucing k2 = (Kucing) h2;`. Objek `h2` murni dibuat sebagai `Hewan`, bukan `Kucing`, sehingga tidak bisa di-downcast.
-   *Perbaikan:* 
-   `if (h2 instanceof Kucing) { Kucing k2 = (Kucing) h2; k2.panjat(); }`
-4. **Analisis `h.makan()`:** Method `suara()` yang dijalankan adalah milik kelas `Kucing` (mencetak "meong"). Meskipun `h` memiliki tipe statis `Hewan`, tipe dinamisnya adalah `Kucing`. Dalam polimorfisme Java, method yang di-override selalu dieksekusi berdasarkan tipe dinamisnya (objek aslinya) saat runtime.
+## Deskripsi Singkat
+Proyek ini merupakan penyelesaian Tugas 2 Praktikum Pemrograman Berbasis Objek (PBO) yang berfokus pada implementasi paradigma OOP di Java. Proyek ini mendemonstrasikan penyelesaian masalah menggunakan *Inheritance* (pewarisan), *Polymorphism* (polimorfisme), *Composition* (komposisi), serta teknik *Defensive Programming* (penanganan Exception) dalam skenario dunia nyata seperti hierarki elektronik dan sistem keranjang toko digital.
 
-**Bagian B**
-5. **Output `new B();`:**
-   A dibuat
-   init B, nilai=0
-   B dibuat, nilai=5
-   *Penjelasan:* Saat constructor `A` dipanggil via `super()`, ia langsung menjalankan method `init()`. Karena `init()` di-override oleh `B`, versi `B` yang berjalan. Namun, atribut `nilai` di kelas `B` belum sempat diinisialisasi (masih bernilai default `0`). Memanggil method yang bisa di-override dari dalam constructor sangat berisiko karena subclass bisa saja menggunakan variabel yang nilainya belum siap.
+## Fitur Utama
+- **Soal 1:** Pengguna dapat melihat informasi detail spesifikasi berbagai perangkat elektronik (Laptop, Ponsel, Laptop Gaming) sekaligus menghitung besaran pajak dan harga setelah promo.
+- **Soal 2:** Menyajikan simulasi pewarisan sifat pada hewan dan membuktikan konsep tipe statis vs dinamis (*polymorphism*) pada kelas Titik dan Lingkaran.
+- **Soal 3:** Pengguna dapat membentuk sebuah garis dari dua buah koordinat titik dan menghitung panjangnya secara akurat tanpa khawatir terjadinya kebocoran memori (*aliasing*).
+- **Soal 4:** Toko Digital dapat menambahkan berbagai jenis produk (Fisik, Digital, Langganan) ke dalam satu keranjang belanja, menolak duplikasi kode barang, mencetak struk belanja, dan menghitung rekapitulasi jumlah per jenis produk.
 
-**Bagian C**
-6. **Analisis `l3.luas()` dan relasi is-a:** `l3.luas()` menghasilkan `0.0` karena tipe dinamis `l3` adalah `Titik`, sehingga method `luas()` milik `Titik` yang tereksekusi. Relasi "Titik adalah sebuah Lingkaran" sebenarnya **kurang masuk akal (dipaksakan)**. Konsekuensinya, jika ada kode yang berasumsi bahwa semua objek `Lingkaran` pasti memiliki luas lebih dari 0, program tersebut akan mengalami *bug*/error logika saat disusupi objek `Titik`.
+## Konsep OOP yang Diterapkan
 
-### Analisis Konsep
-1. **Perbedaan Overriding dan Overloading:**
-   *Overriding* adalah menulis ulang method dari superclass di subclass dengan nama dan parameter yang persis sama, berkaitan erat dengan *inheritance* dan menjadi dasar terbentuknya polimorfisme (contoh: method `infoSingkat()` di `Laptop` menimpa versi di `Perangkat`). *Overloading* adalah membuat beberapa method dengan nama sama tetapi parameter berbeda di dalam satu kelas yang sama, dan tidak berkaitan dengan polimorfisme saat *runtime* (contoh: dua *constructor* di kelas `Garis` dengan jumlah parameter berbeda).
+| Konsep | Lokasi Penerapan | Alasan Pemilihan |
+|---|---|---|
+| **Inheritance** | `Laptop extends Perangkat`, `Ponsel extends Perangkat` | Memanfaatkan kembali atribut dasar (merek, harga) dari kelas Induk tanpa harus repot menulis ulang kode dari nol. |
+| **Polymorphism** | `Keranjang.java` (method `hitungTotal` & `cetakStruk`) | Memungkinkan perulangan pada satu senarai tipe `Produk` secara umum, tetapi Java secara dinamis menjalankan perhitungan harga yang spesifik pada tiap-tiap sub-kelas. |
+| **Composition** | `Garis.java` (menyimpan 2 objek `Titik`) | Sebuah Garis tidak akan eksis tanpa adanya dua entitas Titik (relasi *has-a* yang kuat). |
+| **Exception Handling** | `Produk.java` (constructor), `Keranjang.java` | Mencegah instansiasi produk yang tidak masuk akal (harga negatif/nama kosong) dan menolak penginputan kode produk ganda. |
+| **Encapsulation** | Semua kelas (penggunaan akses `private`) | Menyembunyikan data sensitif seperti atribut koordinat dan harga agar tidak dimodifikasi secara sembarangan dari luar kelas. |
 
-2. **Kapan Memilih Inheritance vs Composition:**
-   *Inheritance* dipilih ketika ada hubungan logis "adalah sebuah" (*is-a*), di mana subclass memperluas fungsi dasar superclass (contoh di tugas: `Ponsel` adalah sebuah `Perangkat`). *Composition* dipilih ketika ada hubungan "memiliki" (*has-a*), di mana sebuah kelas dirakit menggunakan objek dari kelas lain sebagai komponennya (contoh di tugas: `Garis` memiliki dua titik ujung dari objek `Titik`, dan `Keranjang` memiliki daftar `Produk`).
+## 5. Struktur Project
 
-3. **Instanceof pada cetakStruk() vs hitungPerJenis():**
-   Method `cetakStruk()` tidak memerlukan `instanceof` karena menggunakan polimorfisme; Java otomatis memanggil method `deskripsi()` dan `hitungHargaAkhir()` milik objek aslinya (dinamik) tanpa perlu dicek manual. Sebaliknya, `hitungPerJenis()` butuh `instanceof` karena tugasnya mengklasifikasikan dan menghitung jumlah spesifik masing-masing *subclass*. *Downcasting* tidak selalu aman karena jika kita memaksa *cast* objek ke tipe yang bukan tipe aslinya (misal memaksa `ProdukFisik` menjadi `Langganan`), program akan *crash* dan melempar `ClassCastException`.
+    Tugas2_Inherit-polymorph-25056/
+    ├── src/
+    │   ├── soal1/ (Berisi Laptop, Ponsel, Perangkat, dll)
+    │   ├── soal2/ (Berisi Hewan, Kucing, Lingkaran, A, B, dll)
+    │   ├── soal3/ (Berisi Titik, Garis, TesSoal3)
+    │   └── soal4/ (Berisi Produk, Keranjang, ProdukFisik, Langganan, dll)
+    ├── img/ (Menyimpan tangkapan layar contoh output)
+    ├── .gitignore
+    └── README.md
+
+## Prasyarat
+- **JDK:** Java Development Kit (JDK) 17 atau yang lebih baru.
+- **IDE yang Disarankan:** IntelliJ IDEA, Visual Studio Code (dengan ekstensi Java), atau Eclipse.
+
+## Cara Menjalankan Program
+**Lewat IDE (IntelliJ / VS Code):**
+Buka salah satu file kelas uji (misalnya `TesSoal4.java`), lalu tekan tombol **Run** (ikon *play* berwarna hijau) yang terletak di atas deklarasi `public static void main` atau jalankan lewat menu Run Configuration.
+
+**Lewat Command Line (Terminal):**
+1. Buka terminal dan arahkan direktori aktif ke dalam folder `src`: `cd src`
+2. Kompilasi kelas dalam paket: `javac soal4/*.java`
+3. Eksekusi kelas utama: `java soal4.TesSoal4`
+
+## Contoh Output
+*(Ganti tautan di bawah ini dengan nama file screenshot yang sesuai di folder img)*
+- Output Soal 1: `![Output 1](img/Cuplikan layar 2026-10-31 002537)`
+- Output Soal 2: `![Output 2](img/Cuplikan layar 2026-10-31 002215)`
+- Output Soal 3: `![Output 3](img/Cuplikan layar 2026-10-31 002405)`
+- Output Soal 4: `![Output 4](img/Cuplikan layar 2026-10-31 002439)`
+
+## Jawaban Soal dan Analisis Konsep
+**Pertanyaan Tambahan Soal 1:**
+Jika atribut `harga` diubah menjadi `private`, muncul pesan error *"The field Perangkat.harga is not visible"*. Ini terjadi karena hak akses `private` membatasi atribut hanya untuk kelas `Perangkat`. Subclass `Laptop` tidak mewarisinya dan gagal mengaksesnya pada method diskon.
+
+**Jawaban Soal 2:**
+1. Error pada `h.panjat();` terjadi karena tipe statis `h` adalah `Hewan`, dan kompilator menolaknya karena `Hewan` tidak punya method `panjat()`.
+2. `ClassCastException` terjadi karena objek murni `Hewan` dipaksa di-downcast menjadi `Kucing`. Solusinya adalah memvalidasinya menggunakan `if (h2 instanceof Kucing)`.
+3. Konstruktor `A` secara prematur memanggil `init()` versi `B` padahal atribut `nilai` di `B` belum tuntas diinisialisasi (mengembalikan nilai *default* 0).
+4. Pemaksaan relasi `Titik extends Lingkaran` memicu bug logika karena `Titik` secara sepihak merombak luas menjadi 0, merusak ekspektasi bahwa semua Lingkaran memiliki luas.
+
+**Pertanyaan Tambahan Soal 3 (Aliasing):**
+*Aliasing* terjadi karena konstruktor 1 mengikat langsung referensi memori dari parameter. Saat titik di luar diubah, garis di dalam ikut terpengaruh. Solusinya adalah menggunakan *Defensive Copy* (membuat objek `new Titik` baru di dalam kelas `Garis`).
+
+**Analisis Konsep Utama:**
+1. **Perbedaan Overriding dan Overloading:** *Overriding* mengganti perilaku method superclass di subclass dengan parameter yang identik (berkaitan dengan *runtime polymorphism*). *Overloading* adalah membuat banyak method bernama sama di satu kelas namun dengan parameter yang berbeda.
+2. **Inheritance vs Composition:** *Inheritance* dipakai jika ada relasi logis *is-a* (contoh: Ponsel adalah Perangkat). *Composition* dipakai jika ada relasi rakitan *has-a* (contoh: Keranjang memiliki Produk).
+3. **Instanceof:** `cetakStruk()` otomatis menyeleksi versi method yang tepat berkat tipe dinamis polimorfisme. Namun, `hitungPerJenis()` wajib menggunakan `instanceof` untuk mendata jumlah masing-masing tipe kelas secara akurat untuk hindari *ClassCastException*.
+
+## Batasan dan Pengembangan Lanjutan
+- **Batasan:** Program toko digital saat ini bersifat *volatile*. Data keranjang belanja hanya mengandalkan RAM (`ArrayList`) dan akan musnah seluruhnya apabila siklus eksekusi program dihentikan.
+- **Pengembangan Lanjutan:** Program ini sangat potensial untuk ditingkatkan dengan mengintegrasikan sistem basis data (seperti MySQL lewat JDBC) agar transaksi menjadi persisten, serta menambahkan antarmuka GUI (misalnya menggunakan JavaFX atau CustomTkinter) agar interaksi pengguna menjadi jauh lebih mulus dibandingkan terminal.
