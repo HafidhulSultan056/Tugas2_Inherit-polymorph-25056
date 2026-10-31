@@ -5,7 +5,13 @@ class Kucing extends Hewan {
         super(nama);
         System.out.println("Kucing dibuat");
     }
+
     @Override
-    void suara() { System.out.println("meong"); }
-    void panjat() { System.out.println(nama + " memanjat"); }
+    void suara() {
+        System.out.println("meong");
+    }
+
+    void panjat() {
+        System.out.println(nama + " memanjat");
+    }
 }

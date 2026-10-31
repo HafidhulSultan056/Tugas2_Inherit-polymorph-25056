@@ -9,14 +9,14 @@ public class ProdukFisik extends Produk {
         this.beratKg = beratKg;
     }
 
-    @Override 
+    @Override
     public double hitungHargaAkhir() {
         return hargaDasar + (beratKg * ONGKIR_PER_KG);
     }
 
-    @Override 
+    @Override
     public String deskripsi() {
         return "fisik " + beratKg + " kg";
     }
-    
+
 }

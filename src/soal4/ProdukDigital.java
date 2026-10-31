@@ -8,13 +8,13 @@ public class ProdukDigital extends Produk {
         super(kode, nama, hargaDasar);
         this.ukuranMb = ukuranMb;
     }
-    
-    @Override 
+
+    @Override
     public double hitungHargaAkhir() {
         return hargaDasar - (hargaDasar * DISKON_DIGITAL);
     }
 
-    @Override 
+    @Override
     public String deskripsi() {
         return "digital " + ukuranMb + " MB";
     }

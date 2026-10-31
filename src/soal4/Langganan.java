@@ -10,7 +10,7 @@ public class Langganan extends ProdukDigital {
         this.durasiBulan = durasiBulan;
     }
 
-    @Override 
+    @Override
     public double hitungHargaAkhir() {
         double total = hargaDasar * durasiBulan;
         if (durasiBulan >= BATAS_BULAN_DISKON) {
@@ -18,7 +18,7 @@ public class Langganan extends ProdukDigital {
         }
         return total;
     }
-    
+
     @Override
     public String deskripsi() {
         return "langganan " + durasiBulan + " bulan";

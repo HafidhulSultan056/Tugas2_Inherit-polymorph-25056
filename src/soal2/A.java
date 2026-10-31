@@ -5,6 +5,9 @@ class A {
         System.out.println("A dibuat");
         init();
     }
-    void init() { System.out.println("init A");}
-    
+
+    void init() {
+        System.out.println("init A");
+    }
+
 }

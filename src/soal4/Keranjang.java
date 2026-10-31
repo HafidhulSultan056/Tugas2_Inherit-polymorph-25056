@@ -9,6 +9,11 @@ public class Keranjang {
         daftarProduk = new ArrayList<>();
     }
 
+    /**
+     * Menambahkan produk ke keranjang.
+     * @param p objek produk yang akan ditambahkan
+     * @throws IllegalStateException jika kode produk sudah ada di keranjang
+     */
     public void tambah(Produk p) {
         for (Produk yangAda : daftarProduk) {
             if (yangAda.getKode().equals(p.getKode())) {
@@ -21,7 +26,7 @@ public class Keranjang {
     public double hitungTotal() {
         double total = 0;
         for (Produk p : daftarProduk) {
-            
+
             total += p.hitungHargaAkhir();
         }
         return total;
@@ -29,8 +34,8 @@ public class Keranjang {
 
     public void cetakStruk() {
         for (Produk p : daftarProduk) {
-            System.out.printf("%s | %s | %s | Rp%.0f%n", 
-                p.getKode(), p.getNama(), p.deskripsi(), p.hitungHargaAkhir());
+            System.out.printf("%s | %s | %s | Rp%.0f%n",
+                    p.getKode(), p.getNama(), p.deskripsi(), p.hitungHargaAkhir());
         }
         System.out.printf("TOTAL: Rp%.0f%n", hitungTotal());
     }
@@ -41,7 +46,7 @@ public class Keranjang {
         int langganan = 0;
 
         for (Produk p : daftarProduk) {
-            
+
             if (p instanceof Langganan) {
                 langganan++;
             } else if (p instanceof ProdukDigital) {
