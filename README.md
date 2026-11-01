@@ -52,7 +52,6 @@ Buka salah satu file kelas uji (misalnya `TesSoal4.java`), lalu tekan tombol **R
 3. Eksekusi kelas utama: `java soal4.TesSoal4`
 
 ## Contoh Output
-*(Ganti tautan di bawah ini dengan nama file screenshot yang sesuai di folder img)*
 - Output Soal 1: `![Output 1](img/Cuplikan layar 2026-10-31 002537)`
 - Output Soal 2: `![Output 2](img/Cuplikan layar 2026-10-31 002215)`
 - Output Soal 3: `![Output 3](img/Cuplikan layar 2026-10-31 002405)`
